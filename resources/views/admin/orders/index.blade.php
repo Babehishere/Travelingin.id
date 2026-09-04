@@ -2,12 +2,40 @@
 @section('title', 'Manajemen Pesanan')
 @section('content')
 <div class="bg-white rounded-xl shadow-sm border border-gray-100">
-    <div class="px-6 py-4 border-b border-gray-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div>
-            <h2 class="font-semibold text-gray-800 text-lg">Daftar Pesanan / Booking Masuk</h2>
-            <p class="text-xs text-gray-500 mt-0.5">Pencatatan otomatis seluruh transaksi pembelian pelanggan</p>
-        </div>
-        <a href="{{ route('admin.orders.export') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg shadow-sm hover:shadow transition-all">
+    <div class="px-6 py-4 border-b border-gray-100">
+        <h2 class="font-semibold text-gray-800 text-lg">Daftar Pesanan / Booking Masuk</h2>
+        <p class="text-xs text-gray-500 mt-0.5">Pencatatan otomatis seluruh transaksi pembelian pelanggan</p>
+    </div>
+
+    <!-- Filter Bar & Export Excel -->
+    <div class="px-6 py-3 bg-gray-50/70 border-b border-gray-100 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+        <form method="GET" action="{{ route('admin.orders.index') }}" class="flex flex-wrap items-center gap-3 text-sm">
+            <select name="destination_id" onchange="this.form.submit()" class="border-gray-200 rounded-lg text-xs md:text-sm focus:ring-emerald-500 focus:border-emerald-500 bg-white py-1.5 px-3">
+                <option value="">-- Semua Produk / Destinasi --</option>
+                @foreach($destinations as $dest)
+                    <option value="{{ $dest->id }}" {{ request('destination_id') == $dest->id ? 'selected' : '' }}>
+                        {{ $dest->name }}
+                    </option>
+                @endforeach
+            </select>
+
+            <select name="status" onchange="this.form.submit()" class="border-gray-200 rounded-lg text-xs md:text-sm focus:ring-emerald-500 focus:border-emerald-500 bg-white py-1.5 px-3">
+                <option value="">-- Semua Status --</option>
+                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu Bayar</option>
+                <option value="dp_processed" {{ request('status') == 'dp_processed' ? 'selected' : '' }}>DP Diproses</option>
+                <option value="confirmed" {{ request('status') == 'confirmed' ? 'selected' : '' }}>DP Terkonfirmasi / Tiket Lunas</option>
+                <option value="pelunasan_processed" {{ request('status') == 'pelunasan_processed' ? 'selected' : '' }}>Pelunasan Diproses</option>
+                <option value="lunas" {{ request('status') == 'lunas' ? 'selected' : '' }}>Lunas</option>
+                <option value="cancel_pending" {{ request('status') == 'cancel_pending' ? 'selected' : '' }}>Pengajuan Batal</option>
+                <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
+            </select>
+
+            @if(request('destination_id') || request('status'))
+                <a href="{{ route('admin.orders.index') }}" class="text-xs text-rose-600 hover:underline font-medium ml-1">Reset Filter</a>
+            @endif
+        </form>
+
+        <a href="{{ route('admin.orders.export', request()->query()) }}" class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs md:text-sm font-semibold rounded-lg shadow-sm hover:shadow transition-all">
             <i class="fas fa-file-excel text-base"></i>
             <span>Export Excel (.csv)</span>
         </a>

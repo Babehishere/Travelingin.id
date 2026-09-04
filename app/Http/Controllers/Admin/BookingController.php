@@ -8,16 +8,39 @@ use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Booking::with('destination')->latest()->get();
-        return view('admin.orders.index', compact('orders'));
+        $query = Booking::with('destination')->latest();
+
+        if ($request->filled('destination_id')) {
+            $query->where('destination_id', $request->destination_id);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $orders = $query->get();
+        $destinations = \App\Models\Destination::orderBy('name')->get();
+
+        return view('admin.orders.index', compact('orders', 'destinations'));
     }
 
     public function export(Request $request)
     {
         $fileName = 'laporan-pesanan-' . date('Y-m-d-His') . '.csv';
-        $orders = Booking::with(['destination', 'user'])->latest()->get();
+
+        $query = Booking::with(['destination', 'user'])->latest();
+
+        if ($request->filled('destination_id')) {
+            $query->where('destination_id', $request->destination_id);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $orders = $query->get();
 
         $headers = [
             "Content-type"        => "text/csv; charset=UTF-8",
@@ -45,7 +68,7 @@ class BookingController extends Controller
             $file = fopen('php://output', 'w');
             // Write UTF-8 BOM so Microsoft Excel automatically recognizes UTF-8 encoding
             fputs($file, "\xEF\xBB\xBF");
-            fputcsv($file, $columns);
+            fputcsv($file, $columns, ';');
 
             foreach ($orders as $order) {
                 $statusText = match ($order->status) {
@@ -73,7 +96,7 @@ class BookingController extends Controller
                     $order->created_at ? $order->created_at->format('d-m-Y H:i:s') : '-'
                 ];
 
-                fputcsv($file, $row);
+                fputcsv($file, $row, ';');
             }
 
             fclose($file);
