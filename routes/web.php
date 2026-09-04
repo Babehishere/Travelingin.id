@@ -73,6 +73,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     
     Route::get('/orders', [\App\Http\Controllers\Admin\BookingController::class, 'index'])->name('orders.index');
+    Route::get('/orders/export', [\App\Http\Controllers\Admin\BookingController::class, 'export'])->name('orders.export');
     Route::get('/orders/{id}', [\App\Http\Controllers\Admin\BookingController::class, 'show'])->name('orders.show');
     Route::patch('/orders/{id}/confirm', [\App\Http\Controllers\Admin\BookingController::class, 'confirm'])->name('orders.confirm');
     Route::patch('/orders/{id}/confirm-dp', [\App\Http\Controllers\Admin\BookingController::class, 'confirmDp'])->name('orders.confirmDp');

@@ -14,6 +14,74 @@ class BookingController extends Controller
         return view('admin.orders.index', compact('orders'));
     }
 
+    public function export(Request $request)
+    {
+        $fileName = 'laporan-pesanan-' . date('Y-m-d-His') . '.csv';
+        $orders = Booking::with(['destination', 'user'])->latest()->get();
+
+        $headers = [
+            "Content-type"        => "text/csv; charset=UTF-8",
+            "Content-Disposition" => "attachment; filename=$fileName",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+
+        $columns = [
+            'ID Order',
+            'Nama Pemesan',
+            'No HP',
+            'Email',
+            'Produk / Destinasi',
+            'Tgl Booking',
+            'Jumlah Pax',
+            'Total Harga (Rp)',
+            'Jumlah DP (Rp)',
+            'Status Pembayaran',
+            'Tanggal Transaksi'
+        ];
+
+        $callback = function () use ($orders, $columns) {
+            $file = fopen('php://output', 'w');
+            // Write UTF-8 BOM so Microsoft Excel automatically recognizes UTF-8 encoding
+            fputs($file, "\xEF\xBB\xBF");
+            fputcsv($file, $columns);
+
+            foreach ($orders as $order) {
+                $statusText = match ($order->status) {
+                    'pending' => 'Menunggu Bayar',
+                    'dp_processed' => ($order->destination && $order->destination->type === 'tiket') ? 'Pembayaran Diproses' : 'DP Diproses',
+                    'confirmed' => ($order->destination && $order->destination->type === 'tiket') ? 'Lunas' : 'DP Terkonfirmasi',
+                    'pelunasan_processed' => 'Pelunasan Diproses',
+                    'lunas' => 'Lunas',
+                    'cancel_pending' => 'Pengajuan Batal',
+                    'cancelled' => 'Dibatalkan',
+                    default => ucfirst($order->status),
+                };
+
+                $row = [
+                    '#ORD-' . str_pad($order->id, 4, '0', STR_PAD_LEFT),
+                    $order->nama,
+                    "'" . $order->no_hp,
+                    $order->email,
+                    $order->destination->name ?? 'N/A',
+                    $order->tanggal_booking ? \Carbon\Carbon::parse($order->tanggal_booking)->format('d-m-Y') : '-',
+                    $order->jumlah_orang,
+                    $order->total_price,
+                    $order->dp_amount ?? 0,
+                    $statusText,
+                    $order->created_at ? $order->created_at->format('d-m-Y H:i:s') : '-'
+                ];
+
+                fputcsv($file, $row);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
     public function show($id)
     {
         $order = Booking::with('destination')->findOrFail($id);

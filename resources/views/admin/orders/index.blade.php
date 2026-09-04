@@ -2,8 +2,15 @@
 @section('title', 'Manajemen Pesanan')
 @section('content')
 <div class="bg-white rounded-xl shadow-sm border border-gray-100">
-    <div class="px-6 py-4 border-b border-gray-100">
-        <h2 class="font-semibold text-gray-800">Daftar Pesanan / Booking Masuk</h2>
+    <div class="px-6 py-4 border-b border-gray-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div>
+            <h2 class="font-semibold text-gray-800 text-lg">Daftar Pesanan / Booking Masuk</h2>
+            <p class="text-xs text-gray-500 mt-0.5">Pencatatan otomatis seluruh transaksi pembelian pelanggan</p>
+        </div>
+        <a href="{{ route('admin.orders.export') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg shadow-sm hover:shadow transition-all">
+            <i class="fas fa-file-excel text-base"></i>
+            <span>Export Excel (.csv)</span>
+        </a>
     </div>
     <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
