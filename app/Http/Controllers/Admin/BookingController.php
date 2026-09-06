@@ -134,7 +134,7 @@ class BookingController extends Controller
                 return redirect()->back()->with('success', 'Pembayaran Tiket Lunas berhasil dikonfirmasi. TAPI EMAIL GAGAL DIKIRIM: ' . $e->getMessage());
             }
 
-            return redirect()->back()->with('success', 'Pembayaran Tiket Lunas berhasil dikonfirmasi. [DEBUG Mailer: ' . config('mail.default') . ']');
+            return redirect()->back()->with('success', 'Pembayaran Tiket Lunas berhasil dikonfirmasi.');
         }
 
         $booking->status = 'confirmed';
@@ -146,7 +146,7 @@ class BookingController extends Controller
             return redirect()->back()->with('success', 'Pembayaran Down Payment berhasil dikonfirmasi. TAPI EMAIL GAGAL DIKIRIM: ' . $e->getMessage());
         }
 
-        return redirect()->back()->with('success', 'Pembayaran Down Payment berhasil dikonfirmasi. [DEBUG Mailer: ' . config('mail.default') . ']');
+        return redirect()->back()->with('success', 'Pembayaran Down Payment berhasil dikonfirmasi.');
     }
 
     public function confirmPelunasan(Request $request, $id)
@@ -161,7 +161,7 @@ class BookingController extends Controller
             return redirect()->back()->with('success', 'Pembayaran Pelunasan berhasil dikonfirmasi. Status pesanan diubah menjadi Lunas. TAPI EMAIL GAGAL: ' . $e->getMessage());
         }
 
-        return redirect()->back()->with('success', 'Pembayaran Pelunasan berhasil dikonfirmasi. Status pesanan diubah menjadi Lunas. [DEBUG Mailer: ' . config('mail.default') . ']');
+        return redirect()->back()->with('success', 'Pembayaran Pelunasan berhasil dikonfirmasi. Status pesanan diubah menjadi Lunas.');
     }
 
     public function approveCancellation(Request $request, $id)
