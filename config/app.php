@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://travelinginid-production-7526.up.railway.app'),
 
     /*
     |--------------------------------------------------------------------------
