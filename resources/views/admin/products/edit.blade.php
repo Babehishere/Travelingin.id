@@ -132,6 +132,10 @@
                                     <p id="file-name-main" class="text-[10px] text-gray-400 uppercase tracking-tighter">Biarkan kosong jika tidak ingin mengubah (Max 10MB)</p>
                                 </div>
                             </div>
+                            <div class="mt-3">
+                                <label class="block text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-1">Atau Gunakan Link / URL Gambar (Opsional)</label>
+                                <input type="url" name="image_url" value="{{ old('image_url', Str::startsWith($product->image, ['http://', 'https://']) ? $product->image : '') }}" placeholder="Contoh: https://images.pexels.com/..." class="w-full px-4 py-2.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all text-xs font-medium">
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -84,6 +84,7 @@ class DestinationController extends Controller
             'loyalty_points' => 'required|integer|min:0',
             'travel_date' => 'nullable|date',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp,avif,svg|max:10240',
+            'image_url' => 'nullable|url',
             'whatsapp_link' => 'nullable|string|max:255',
             'whats_included' => 'nullable|array',
             'whats_included.*' => 'nullable|string|max:255',
@@ -103,6 +104,8 @@ class DestinationController extends Controller
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('destinations', 'public');
             $validated['image'] = $imagePath;
+        } elseif ($request->filled('image_url')) {
+            $validated['image'] = $request->image_url;
         }
 
         if ($validated['type'] === 'tourguide') {
@@ -141,6 +144,7 @@ class DestinationController extends Controller
             'loyalty_points' => 'required|integer|min:0',
             'travel_date' => 'nullable|date',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp,avif,svg|max:10240',
+            'image_url' => 'nullable|url',
             'whatsapp_link' => 'nullable|string|max:255',
             'whats_included' => 'nullable|array',
             'whats_included.*' => 'nullable|string|max:255',
@@ -163,6 +167,8 @@ class DestinationController extends Controller
             }
             $imagePath = $request->file('image')->store('destinations', 'public');
             $validated['image'] = $imagePath;
+        } elseif ($request->filled('image_url')) {
+            $validated['image'] = $request->image_url;
         }
 
         if ($validated['type'] === 'tourguide') {
