@@ -54,7 +54,9 @@ class DestinationController extends Controller
             $validated['image'] = $imagePath;
         }
 
-        if ($request->hasFile('gallery')) {
+        if ($validated['type'] === 'tourguide') {
+            $validated['gallery'] = null;
+        } elseif ($request->hasFile('gallery')) {
             $galleryPaths = [];
             foreach ($request->file('gallery') as $file) {
                 $galleryPaths[] = $file->store('destinations/gallery', 'public');
@@ -112,27 +114,31 @@ class DestinationController extends Controller
             $validated['image'] = $imagePath;
         }
 
-        // Handle gallery image removals
-        $gallery = $product->gallery ?? [];
-        if ($request->has('remove_gallery')) {
-            foreach ($request->remove_gallery as $imageToRemove) {
-                if (($key = array_search($imageToRemove, $gallery)) !== false) {
-                    unset($gallery[$key]);
-                    if (!str_starts_with($imageToRemove, 'http://') && !str_starts_with($imageToRemove, 'https://') && Storage::disk('public')->exists($imageToRemove)) {
-                        Storage::disk('public')->delete($imageToRemove);
+        if ($validated['type'] === 'tourguide') {
+            $validated['gallery'] = null;
+        } else {
+            // Handle gallery image removals
+            $gallery = $product->gallery ?? [];
+            if ($request->has('remove_gallery')) {
+                foreach ($request->remove_gallery as $imageToRemove) {
+                    if (($key = array_search($imageToRemove, $gallery)) !== false) {
+                        unset($gallery[$key]);
+                        if (!str_starts_with($imageToRemove, 'http://') && !str_starts_with($imageToRemove, 'https://') && Storage::disk('public')->exists($imageToRemove)) {
+                            Storage::disk('public')->delete($imageToRemove);
+                        }
                     }
                 }
+                $gallery = array_values($gallery);
             }
-            $gallery = array_values($gallery);
-        }
 
-        // Handle new gallery uploads
-        if ($request->hasFile('gallery')) {
-            foreach ($request->file('gallery') as $file) {
-                $gallery[] = $file->store('destinations/gallery', 'public');
+            // Handle new gallery uploads
+            if ($request->hasFile('gallery')) {
+                foreach ($request->file('gallery') as $file) {
+                    $gallery[] = $file->store('destinations/gallery', 'public');
+                }
             }
+            $validated['gallery'] = $gallery;
         }
-        $validated['gallery'] = $gallery;
 
         $product->update($validated);
 

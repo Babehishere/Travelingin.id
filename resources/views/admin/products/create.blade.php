@@ -42,7 +42,7 @@
 
                 <div>
                     <label class="block text-[11px] uppercase tracking-widest font-bold text-gray-400 mb-2">Kategori Produk</label>
-                    <select name="type" required class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium appearance-none">
+                    <select name="type" id="product-type-select" onchange="toggleGallerySection()" required class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium appearance-none">
                         <option value="paket">Paket Liburan</option>
                         <option value="tiket">Tiket</option>
                         <option value="tourguide">Tourguide</option>
@@ -123,7 +123,7 @@
                     </div>
                 </div>
 
-                <div class="col-span-2">
+                <div id="gallery-section" class="col-span-2">
                     <label class="block text-[11px] uppercase tracking-widest font-bold text-gray-400 mb-2">Foto Galeri Lokasi (Multi-Upload)</label>
                     <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-100 border-dashed rounded-xl hover:border-accent/50 transition-colors cursor-pointer group bg-gray-50/50">
                         <div class="space-y-1 text-center">
@@ -153,6 +153,18 @@
 </div>
 
 <script>
+    function toggleGallerySection() {
+        const typeSelect = document.getElementById('product-type-select');
+        const gallerySection = document.getElementById('gallery-section');
+        if (typeSelect && gallerySection) {
+            if (typeSelect.value === 'tourguide') {
+                gallerySection.style.display = 'none';
+            } else {
+                gallerySection.style.display = 'block';
+            }
+        }
+    }
+
     function updateFileName(input, targetId) {
         if (input.files && input.files.length > 0) {
             document.getElementById(targetId).innerText = "File terpilih: " + input.files[0].name;
@@ -180,8 +192,9 @@
         container.appendChild(div);
     }
 
-    // Add default fields for convenience
+    // Add default fields for convenience & check gallery section
     document.addEventListener('DOMContentLoaded', function() {
+        toggleGallerySection();
         addIncludedField('Professional Guide');
         addIncludedField('All-in-One Ticket');
         addIncludedField('Premium Transport');

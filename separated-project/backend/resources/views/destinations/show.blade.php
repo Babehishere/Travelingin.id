@@ -191,6 +191,7 @@
                         </div>
                     </div>
 
+                    @if($destination->type !== 'tourguide')
                     <h2 class="section-title">Location Gallery</h2>
                     @php
                         $galleryImages = [];
@@ -236,6 +237,7 @@
                             <img src="{{ $galleryImages[2] }}" style="width: 100%; height: 142px; object-fit: cover; border-radius: 20px;" alt="Gallery 3">
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
 

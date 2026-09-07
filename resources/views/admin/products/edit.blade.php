@@ -43,7 +43,7 @@
 
                 <div>
                     <label class="block text-[11px] uppercase tracking-widest font-bold text-gray-400 mb-2">Kategori Produk</label>
-                    <select name="type" required class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium appearance-none">
+                    <select name="type" id="product-type-select" onchange="toggleGallerySection()" required class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium appearance-none">
                         <option value="paket" {{ old('type', $product->type) == 'paket' ? 'selected' : '' }}>Paket Liburan</option>
                         <option value="tiket" {{ old('type', $product->type) == 'tiket' ? 'selected' : '' }}>Tiket</option>
                         <option value="tourguide" {{ old('type', $product->type) == 'tourguide' ? 'selected' : '' }}>Tourguide</option>
@@ -136,7 +136,7 @@
                     </div>
                 </div>
 
-                <div class="col-span-2">
+                <div id="gallery-section" class="col-span-2" style="{{ old('type', $product->type) == 'tourguide' ? 'display: none;' : '' }}">
                     <label class="block text-[11px] uppercase tracking-widest font-bold text-gray-400 mb-2">Foto Galeri Lokasi (Saat Ini)</label>
                     @if($product->gallery && count($product->gallery) > 0)
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
@@ -183,6 +183,18 @@
 </div>
 
 <script>
+    function toggleGallerySection() {
+        const typeSelect = document.getElementById('product-type-select');
+        const gallerySection = document.getElementById('gallery-section');
+        if (typeSelect && gallerySection) {
+            if (typeSelect.value === 'tourguide') {
+                gallerySection.style.display = 'none';
+            } else {
+                gallerySection.style.display = 'block';
+            }
+        }
+    }
+
     function updateFileName(input, targetId) {
         if (input.files && input.files.length > 0) {
             document.getElementById(targetId).innerText = "File terpilih: " + input.files[0].name;
@@ -210,8 +222,9 @@
         container.appendChild(div);
     }
 
-    // Populate initial fields
+    // Populate initial fields & set initial gallery visibility
     document.addEventListener('DOMContentLoaded', function() {
+        toggleGallerySection();
         @if($product->whats_included && count($product->whats_included) > 0)
             @foreach($product->whats_included as $item)
                 addIncludedField("{{ addslashes($item) }}");
