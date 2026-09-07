@@ -12,65 +12,78 @@
             @csrf
             @method('PUT')
             
+            @if ($errors->any())
+                <div class="p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+                    <div class="font-bold mb-1 flex items-center gap-2">
+                        <i class="fas fa-exclamation-circle text-red-500"></i> Gagal menyimpan perubahan:
+                    </div>
+                    <ul class="list-disc list-inside space-y-1 text-xs text-red-600">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="col-span-2">
                     <label class="block text-[11px] uppercase tracking-widest font-bold text-gray-400 mb-2">Nama Destinasi / Produk</label>
-                    <input type="text" name="name" value="{{ $product->name }}" required class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium">
+                    <input type="text" name="name" value="{{ old('name', $product->name) }}" required class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium">
                 </div>
 
                 <div>
                     <label class="block text-[11px] uppercase tracking-widest font-bold text-gray-400 mb-2">Harga Normal (Rp)</label>
-                    <input type="number" name="price" value="{{ $product->price }}" required class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium">
+                    <input type="number" name="price" value="{{ old('price', $product->price) }}" required class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium">
                 </div>
 
                 <div>
                     <label class="block text-[11px] uppercase tracking-widest font-bold text-gray-400 mb-2">Harga Diskon (Opsional)</label>
-                    <input type="number" name="discount_price" value="{{ $product->discount_price }}" class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium">
+                    <input type="number" name="discount_price" value="{{ old('discount_price', $product->discount_price) }}" class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium">
                 </div>
 
                 <div>
                     <label class="block text-[11px] uppercase tracking-widest font-bold text-gray-400 mb-2">Kategori Produk</label>
                     <select name="type" required class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium appearance-none">
-                        <option value="paket" {{ $product->type == 'paket' ? 'selected' : '' }}>Paket Liburan</option>
-                        <option value="tiket" {{ $product->type == 'tiket' ? 'selected' : '' }}>Tiket</option>
-                        <option value="tourguide" {{ $product->type == 'tourguide' ? 'selected' : '' }}>Tourguide</option>
+                        <option value="paket" {{ old('type', $product->type) == 'paket' ? 'selected' : '' }}>Paket Liburan</option>
+                        <option value="tiket" {{ old('type', $product->type) == 'tiket' ? 'selected' : '' }}>Tiket</option>
+                        <option value="tourguide" {{ old('type', $product->type) == 'tourguide' ? 'selected' : '' }}>Tourguide</option>
                     </select>
                 </div>
 
                 <div>
                     <label class="block text-[11px] uppercase tracking-widest font-bold text-gray-400 mb-2">Tipe Paket</label>
                     <select name="package_type" required class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium appearance-none">
-                        <option value="general" {{ $product->package_type == 'general' ? 'selected' : '' }}>Umum / Semua Kalangan</option>
-                        <option value="family" {{ $product->package_type == 'family' ? 'selected' : '' }}>Keluarga (Family)</option>
-                        <option value="backpacker" {{ $product->package_type == 'backpacker' ? 'selected' : '' }}>Backpacker</option>
+                        <option value="general" {{ old('package_type', $product->package_type) == 'general' ? 'selected' : '' }}>Umum / Semua Kalangan</option>
+                        <option value="family" {{ old('package_type', $product->package_type) == 'family' ? 'selected' : '' }}>Keluarga (Family)</option>
+                        <option value="backpacker" {{ old('package_type', $product->package_type) == 'backpacker' ? 'selected' : '' }}>Backpacker</option>
                     </select>
                 </div>
 
                 <div>
                     <label class="block text-[11px] uppercase tracking-widest font-bold text-gray-400 mb-2">Kuota (Pax)</label>
-                    <input type="number" name="quota" value="{{ $product->quota }}" required min="0" class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium">
+                    <input type="number" name="quota" value="{{ old('quota', $product->quota) }}" required min="0" class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium">
                 </div>
 
                 <div>
                     <label class="block text-[11px] uppercase tracking-widest font-bold text-gray-400 mb-2">Loyalty Points</label>
-                    <input type="number" name="loyalty_points" value="{{ $product->loyalty_points }}" required min="0" class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium">
+                    <input type="number" name="loyalty_points" value="{{ old('loyalty_points', $product->loyalty_points) }}" required min="0" class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium">
                 </div>
 
                 <div>
                     <label class="block text-[11px] uppercase tracking-widest font-bold text-gray-400 mb-2">Tanggal Keberangkatan</label>
-                    <input type="date" name="travel_date" value="{{ $product->travel_date }}" class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium">
+                    <input type="date" name="travel_date" value="{{ old('travel_date', $product->travel_date) }}" class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium">
                 </div>
 
                 <div>
                     <label class="block text-[11px] uppercase tracking-widest font-bold text-gray-400 mb-2">Link Grup WhatsApp (Undangan)</label>
-                    <input type="url" name="whatsapp_link" value="{{ $product->whatsapp_link }}" placeholder="E.g. https://chat.whatsapp.com/..." class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium">
+                    <input type="url" name="whatsapp_link" value="{{ old('whatsapp_link', $product->whatsapp_link) }}" placeholder="E.g. https://chat.whatsapp.com/..." class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium">
                 </div>
 
                 <div class="col-span-2">
                     <div class="bg-amber-50/50 border border-amber-100 p-6 rounded-2xl">
                         <label class="flex items-start gap-4 cursor-pointer">
                             <div class="mt-1">
-                                <input type="checkbox" name="is_special_offer" value="1" {{ $product->is_special_offer ? 'checked' : '' }} class="w-5 h-5 rounded border-amber-200 text-accent focus:ring-accent/20">
+                                <input type="checkbox" name="is_special_offer" value="1" {{ old('is_special_offer', $product->is_special_offer) ? 'checked' : '' }} class="w-5 h-5 rounded border-amber-200 text-accent focus:ring-accent/20">
                             </div>
                             <div>
                                 <p class="text-sm font-bold text-amber-900">Aktifkan Sebagai "Special Offer"</p>
@@ -82,7 +95,7 @@
 
                 <div class="col-span-2">
                     <label class="block text-[11px] uppercase tracking-widest font-bold text-gray-400 mb-2">Overview / Deskripsi Lengkap</label>
-                    <textarea name="description" rows="5" required class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium">{{ $product->description }}</textarea>
+                    <textarea name="description" rows="5" required class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all font-medium">{{ old('description', $product->description) }}</textarea>
                 </div>
 
                 <div class="col-span-2">
@@ -100,7 +113,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
                         @if($product->image)
                             <div class="relative group border rounded-xl overflow-hidden aspect-video">
-                                <img src="{{ asset('storage/' . $product->image) }}" class="w-full h-full object-cover shadow-md">
+                                <img src="{{ Str::startsWith($product->image, ['http://', 'https://']) ? $product->image : asset('storage/' . $product->image) }}" class="w-full h-full object-cover shadow-md">
                                 <div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                     <span class="text-[10px] text-white font-bold uppercase tracking-widest">Foto Saat Ini</span>
                                 </div>
@@ -116,7 +129,7 @@
                                             <input id="file-upload" name="image" type="file" class="sr-only" onchange="updateFileName(this, 'file-name-main')">
                                         </label>
                                     </div>
-                                    <p id="file-name-main" class="text-[10px] text-gray-400 uppercase tracking-tighter">Biarkan kosong jika tidak ingin mengubah</p>
+                                    <p id="file-name-main" class="text-[10px] text-gray-400 uppercase tracking-tighter">Biarkan kosong jika tidak ingin mengubah (Max 10MB)</p>
                                 </div>
                             </div>
                         </div>
@@ -129,7 +142,7 @@
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                             @foreach($product->gallery as $image)
                                 <div class="relative rounded-xl overflow-hidden border border-gray-100 group aspect-video">
-                                    <img src="{{ asset('storage/' . $image) }}" class="w-full h-full object-cover">
+                                    <img src="{{ Str::startsWith($image, ['http://', 'https://']) ? $image : asset('storage/' . $image) }}" class="w-full h-full object-cover">
                                     <label class="absolute top-2 right-2 bg-red-600 text-white rounded px-2.5 py-1.5 cursor-pointer text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 shadow hover:bg-red-700 transition-colors">
                                         <input type="checkbox" name="remove_gallery[]" value="{{ $image }}" class="mr-1">
                                         <span>Hapus</span>

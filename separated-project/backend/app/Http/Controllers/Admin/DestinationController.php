@@ -80,24 +80,24 @@ class DestinationController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required',
-            'price' => 'required|numeric',
-            'discount_price' => 'nullable|numeric|lt:price',
+            'price' => 'required|numeric|min:0',
+            'discount_price' => 'nullable|numeric|min:0',
             'type' => 'required|in:tiket,paket,tourguide',
             'package_type' => 'required|in:general,family,backpacker',
             'quota' => 'required|integer|min:0',
             'loyalty_points' => 'required|integer|min:0',
             'travel_date' => 'nullable|date',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp,avif,svg|max:10240',
             'whatsapp_link' => 'nullable|string|max:255',
             'whats_included' => 'nullable|array',
             'whats_included.*' => 'nullable|string|max:255',
             'gallery' => 'nullable|array',
-            'gallery.*' => 'image|mimes:jpeg,png,jpg|max:2048'
+            'gallery.*' => 'image|mimes:jpeg,png,jpg,webp,avif,svg|max:10240'
         ]);
 
         $validated['is_special_offer'] = $request->has('is_special_offer');
 
-        
+        // Clean up empty whats_included items
         if (isset($validated['whats_included'])) {
             $validated['whats_included'] = array_values(array_filter($validated['whats_included'], function($item) {
                 return !is_null($item) && trim($item) !== '';
@@ -105,20 +105,20 @@ class DestinationController extends Controller
         }
 
         if ($request->hasFile('image')) {
-            if ($product->image) {
+            if ($product->image && !str_starts_with($product->image, 'http://') && !str_starts_with($product->image, 'https://')) {
                 Storage::disk('public')->delete($product->image);
             }
             $imagePath = $request->file('image')->store('destinations', 'public');
             $validated['image'] = $imagePath;
         }
 
-        
+        // Handle gallery image removals
         $gallery = $product->gallery ?? [];
         if ($request->has('remove_gallery')) {
             foreach ($request->remove_gallery as $imageToRemove) {
                 if (($key = array_search($imageToRemove, $gallery)) !== false) {
                     unset($gallery[$key]);
-                    if (Storage::disk('public')->exists($imageToRemove)) {
+                    if (!str_starts_with($imageToRemove, 'http://') && !str_starts_with($imageToRemove, 'https://') && Storage::disk('public')->exists($imageToRemove)) {
                         Storage::disk('public')->delete($imageToRemove);
                     }
                 }
@@ -126,7 +126,7 @@ class DestinationController extends Controller
             $gallery = array_values($gallery);
         }
 
-        
+        // Handle new gallery uploads
         if ($request->hasFile('gallery')) {
             foreach ($request->file('gallery') as $file) {
                 $gallery[] = $file->store('destinations/gallery', 'public');

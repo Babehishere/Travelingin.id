@@ -11,6 +11,19 @@
         <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data" class="p-8 space-y-6 bg-white">
             @csrf
             
+            @if ($errors->any())
+                <div class="p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+                    <div class="font-bold mb-1 flex items-center gap-2">
+                        <i class="fas fa-exclamation-circle text-red-500"></i> Gagal menyimpan produk:
+                    </div>
+                    <ul class="list-disc list-inside space-y-1 text-xs text-red-600">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="col-span-2">
                     <label class="block text-[11px] uppercase tracking-widest font-bold text-gray-400 mb-2">Nama Destinasi / Produk</label>
