@@ -161,34 +161,54 @@
 
                     <h2 class="section-title">What's Included</h2>
                     <div class="features-grid">
-                        <div class="feature-item">
-                            <i class="fas fa-check-circle"></i>
-                            <div>
-                                <h4 style="font-size: 1rem;">Professional Guide</h4>
-                                <p style="font-size: 0.85rem; color: var(--text-muted);">Expert knowledge & local stories</p>
+                        @if($destination->type === 'tourguide')
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <div>
+                                    <h4 style="font-size: 1rem;">Professional Guide</h4>
+                                    <p style="font-size: 0.85rem; color: var(--text-muted);">Expert knowledge & local stories</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-check-circle"></i>
-                            <div>
-                                <h4 style="font-size: 1rem;">All-in-One Ticket</h4>
-                                <p style="font-size: 0.85rem; color: var(--text-muted);">Skip the line at every entrance</p>
+                        @elseif($destination->whats_included && is_array($destination->whats_included) && count($destination->whats_included) > 0)
+                            @foreach($destination->whats_included as $inc)
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <div>
+                                        <h4 style="font-size: 1rem;">{{ $inc }}</h4>
+                                        <p style="font-size: 0.85rem; color: var(--text-muted);">Fasilitas termasuk dalam paket ini</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <div>
+                                    <h4 style="font-size: 1rem;">Professional Guide</h4>
+                                    <p style="font-size: 0.85rem; color: var(--text-muted);">Expert knowledge & local stories</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-check-circle"></i>
-                            <div>
-                                <h4 style="font-size: 1rem;">Premium Transport</h4>
-                                <p style="font-size: 0.85rem; color: var(--text-muted);">Comfortable journey throughout</p>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <div>
+                                    <h4 style="font-size: 1rem;">All-in-One Ticket</h4>
+                                    <p style="font-size: 0.85rem; color: var(--text-muted);">Skip the line at every entrance</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-check-circle"></i>
-                            <div>
-                                <h4 style="font-size: 1rem;">Gourmet Meals</h4>
-                                <p style="font-size: 0.85rem; color: var(--text-muted);">Authentic culinary experiences</p>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <div>
+                                    <h4 style="font-size: 1rem;">Premium Transport</h4>
+                                    <p style="font-size: 0.85rem; color: var(--text-muted);">Comfortable journey throughout</p>
+                                </div>
                             </div>
-                        </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <div>
+                                    <h4 style="font-size: 1rem;">Gourmet Meals</h4>
+                                    <p style="font-size: 0.85rem; color: var(--text-muted);">Authentic culinary experiences</p>
+                                </div>
+                            </div>
+                        @endif
                     </div>
 
                     @if($destination->type !== 'tourguide')

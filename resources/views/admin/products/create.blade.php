@@ -159,6 +159,11 @@
         if (typeSelect && gallerySection) {
             if (typeSelect.value === 'tourguide') {
                 gallerySection.style.display = 'none';
+                const container = document.getElementById('whats-included-container');
+                if (container) {
+                    container.innerHTML = '';
+                    addIncludedField('Professional Guide');
+                }
             } else {
                 gallerySection.style.display = 'block';
             }
