@@ -266,9 +266,9 @@
                         <div class="type-badge">{{ $offer->type }}</div>
                         
                         @if($offer->image)
-                            <img src="{{ Str::startsWith($offer->image, ['http://', 'https://']) ? $offer->image : asset('storage/' . $offer->image) }}" alt="{{ $offer->name }}">
+                            <img src="{{ Str::startsWith($offer->image, ['http://', 'https://']) ? $offer->image : asset('storage/' . $offer->image) }}" referrerpolicy="no-referrer" alt="{{ $offer->name }}">
                         @else
-                            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Special Offer">
+                            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" referrerpolicy="no-referrer" alt="Special Offer">
                         @endif
                     </div>
                     

@@ -192,20 +192,13 @@ class TravelDataSeeder extends Seeder
                     'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80'
                 ];
             } else {
-                $clean = $this->cleanSearchQuery($name);
-                $images = $this->getWikimediaImagesForQuery($clean, 4);
-                if (count($images) >= 4) {
-                    $image = $images[0];
-                    $gallery = array_slice($images, 1, 3);
-                } else {
-                    $fallbackId = $fallbacks['tiket'][$index % count($fallbacks['tiket'])];
-                    $image = "https://images.unsplash.com/{$fallbackId}?auto=format&fit=crop&w=800&q=80";
-                    $otherIds = array_values(array_diff($fallbacks['tiket'], [$fallbackId]));
-                    shuffle($otherIds);
-                    $gallery = [];
-                    for ($g = 0; $g < 3; $g++) {
-                        $gallery[] = "https://images.unsplash.com/{$otherIds[$g]}?auto=format&fit=crop&w=800&q=80";
-                    }
+                $fallbackId = $fallbacks['tiket'][$index % count($fallbacks['tiket'])];
+                $image = "https://images.unsplash.com/{$fallbackId}?auto=format&fit=crop&w=800&q=80";
+                $otherIds = array_values(array_diff($fallbacks['tiket'], [$fallbackId]));
+                shuffle($otherIds);
+                $gallery = [];
+                for ($g = 0; $g < 3; $g++) {
+                    $gallery[] = "https://images.unsplash.com/{$otherIds[$g]}?auto=format&fit=crop&w=800&q=80";
                 }
             }
 
@@ -243,20 +236,13 @@ class TravelDataSeeder extends Seeder
             $isSpecial = ($discountPrice !== null);
 
             // Image loading
-            $clean = $this->cleanSearchQuery($name);
-            $images = $this->getWikimediaImagesForQuery($clean, 4);
-            if (count($images) >= 4) {
-                $image = $images[0];
-                $gallery = array_slice($images, 1, 3);
-            } else {
-                $fallbackId = $fallbacks['paket'][$index % count($fallbacks['paket'])];
-                $image = "https://images.unsplash.com/{$fallbackId}?auto=format&fit=crop&w=800&q=80";
-                $otherIds = array_values(array_diff($fallbacks['paket'], [$fallbackId]));
-                shuffle($otherIds);
-                $gallery = [];
-                for ($g = 0; $g < 3; $g++) {
-                    $gallery[] = "https://images.unsplash.com/{$otherIds[$g]}?auto=format&fit=crop&w=800&q=80";
-                }
+            $fallbackId = $fallbacks['paket'][$index % count($fallbacks['paket'])];
+            $image = "https://images.unsplash.com/{$fallbackId}?auto=format&fit=crop&w=800&q=80";
+            $otherIds = array_values(array_diff($fallbacks['paket'], [$fallbackId]));
+            shuffle($otherIds);
+            $gallery = [];
+            for ($g = 0; $g < 3; $g++) {
+                $gallery[] = "https://images.unsplash.com/{$otherIds[$g]}?auto=format&fit=crop&w=800&q=80";
             }
 
             Destination::create([
@@ -291,21 +277,8 @@ class TravelDataSeeder extends Seeder
             $isSpecial = ($discountPrice !== null);
 
             // Image loading
-            $clean = $this->cleanSearchQuery($name);
-            $images = $this->getWikimediaImagesForQuery($clean, 4);
-            if (count($images) >= 4) {
-                $image = $images[0];
-                $gallery = array_slice($images, 1, 3);
-            } else {
-                $fallbackId = $fallbacks['tourguide'][$index % count($fallbacks['tourguide'])];
-                $image = "https://images.unsplash.com/{$fallbackId}?auto=format&fit=crop&w=800&q=80";
-                $otherIds = array_values(array_diff($fallbacks['tourguide'], [$fallbackId]));
-                shuffle($otherIds);
-                $gallery = [];
-                for ($g = 0; $g < 3; $g++) {
-                    $gallery[] = "https://images.unsplash.com/{$otherIds[$g]}?auto=format&fit=crop&w=800&q=80";
-                }
-            }
+            $fallbackId = $fallbacks['tourguide'][$index % count($fallbacks['tourguide'])];
+            $image = "https://images.unsplash.com/{$fallbackId}?auto=format&fit=crop&w=800&q=80";
 
             Destination::create([
                 'name' => $name,
@@ -320,8 +293,8 @@ class TravelDataSeeder extends Seeder
                 'package_type' => $packageTypes[rand(0, 2)],
                 'quota' => rand(2, 10),
                 'loyalty_points' => (int)($price / 8000),
-                'whats_included' => ['Pemandu Wisata Lokal Bersertifikasi HPI', 'Penyusunan Rencana Perjalanan Kustom', 'Bantuan Pengambilan Foto / Dokumentasi', 'Penjelasan Sejarah & Informasi Mendalam'],
-                'gallery' => $gallery,
+                'whats_included' => ['Professional Guide'],
+                'gallery' => null,
             ]);
         }
     }

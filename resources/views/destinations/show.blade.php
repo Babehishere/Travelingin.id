@@ -351,10 +351,10 @@
                         }
                     @endphp
                     <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
-                        <img src="{{ $galleryImages[0] }}" style="width: 100%; height: 300px; object-fit: cover; border-radius: 20px;" alt="Gallery 1">
+                        <img src="{{ $galleryImages[0] }}" referrerpolicy="no-referrer" style="width: 100%; height: 300px; object-fit: cover; border-radius: 20px;" alt="Gallery 1">
                         <div style="display: flex; flex-direction: column; gap: 15px;">
-                            <img src="{{ $galleryImages[1] }}" style="width: 100%; height: 142px; object-fit: cover; border-radius: 20px;" alt="Gallery 2">
-                            <img src="{{ $galleryImages[2] }}" style="width: 100%; height: 142px; object-fit: cover; border-radius: 20px;" alt="Gallery 3">
+                            <img src="{{ $galleryImages[1] }}" referrerpolicy="no-referrer" style="width: 100%; height: 142px; object-fit: cover; border-radius: 20px;" alt="Gallery 2">
+                            <img src="{{ $galleryImages[2] }}" referrerpolicy="no-referrer" style="width: 100%; height: 142px; object-fit: cover; border-radius: 20px;" alt="Gallery 3">
                         </div>
                     </div>
                     @endif

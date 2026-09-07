@@ -1002,9 +1002,9 @@
                 <div class="dest-card" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
                     <div class="dest-img-container">
                         @if($dest->image)
-                            <img src="{{ Str::startsWith($dest->image, ['http://', 'https://']) ? $dest->image : asset('storage/' . $dest->image) }}" alt="{{ $dest->name }}">
+                            <img src="{{ Str::startsWith($dest->image, ['http://', 'https://']) ? $dest->image : asset('storage/' . $dest->image) }}" referrerpolicy="no-referrer" alt="{{ $dest->name }}">
                         @else
-                            <img src="https://images.unsplash.com/photo-1506012733851-bb9745564c73?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ $dest->name }}">
+                            <img src="https://images.unsplash.com/photo-1506012733851-bb9745564c73?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" referrerpolicy="no-referrer" alt="{{ $dest->name }}">
                         @endif
                         
                         <div class="dest-badge">

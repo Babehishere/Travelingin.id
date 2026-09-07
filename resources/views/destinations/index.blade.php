@@ -358,9 +358,9 @@
                                 @endif
                                 
                                 @if($dest->image)
-                                    <img src="{{ Str::startsWith($dest->image, ['http://', 'https://']) ? $dest->image : asset('storage/' . $dest->image) }}" alt="{{ $dest->name }}">
+                                    <img src="{{ Str::startsWith($dest->image, ['http://', 'https://']) ? $dest->image : asset('storage/' . $dest->image) }}" referrerpolicy="no-referrer" alt="{{ $dest->name }}">
                                 @else
-                                    <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Destination">
+                                    <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" referrerpolicy="no-referrer" alt="Destination">
                                 @endif
 
                                 @if($dest->discount_price)
