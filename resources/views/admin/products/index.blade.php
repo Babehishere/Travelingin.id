@@ -53,7 +53,7 @@
                         <div class="flex items-center gap-4">
                             <div class="relative">
                                 @if($product->image)
-                                    <img src="{{ Str::startsWith($product->image, ['http://', 'https://']) ? $product->image : asset('storage/' . $product->image) }}" class="w-14 h-14 object-cover rounded-xl shadow-sm">
+                                    <img src="{{ Str::startsWith($product->image, ['http://', 'https://']) ? $product->image : asset('storage/' . $product->image) }}" referrerpolicy="no-referrer" class="w-14 h-14 object-cover rounded-xl shadow-sm">
                                 @else
                                     <div class="w-14 h-14 bg-gray-100 rounded-xl flex items-center justify-center text-gray-300">
                                         <i class="fas fa-image text-xl"></i>
